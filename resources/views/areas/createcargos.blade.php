@@ -1,0 +1,131 @@
+@extends('plantilla/layout')
+@section('contenido')
+<br><br>
+<div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Lista de Cargos</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Nombre Cargo</th>
+                  <th>Descripcion</th>
+                  <th>Estado</th>
+                  <th>Opciones</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Nombre Cargo</th>
+                  <th>Descripcion</th>
+                  <th>Estado</th>
+                  <th>Opciones</th>
+                  <th></th>
+                </tr>
+              </tfoot>
+              <tbody>
+              {{ csrf_field() }}
+                @forelse ($cargos as $cargos)
+                <tr>
+                               
+                  <td>{{ $cargos->nombreCargo}}</td>
+                  <td>{{ $cargos->descripcion}}</td>
+                        @if ($cargos->estado == 1)
+                            <td>ACTIVO</td>
+                        @else
+                            <td>INACTIVO</td>
+                        @endif
+                    <td>
+                    <a href="{{action('CargosController@edit', $cargos -> idCargo)}}"><button class="btn btn-info">Editar</button></a>
+                     </td>
+                     <td>
+                    <a href="{{url('CargosAreasEliminar', $cargos -> idCargo)}}"><button class="btn btn-danger">X</button></a>
+                     </td>
+
+                     
+                </tr>
+                @empty
+                            <tr>
+                                <td colspan="9"><h3>No hay Cargos creados</h3></td>
+                            </tr>
+                @endforelse
+                
+              </tbody>
+            </table>
+
+
+     
+
+
+
+
+          </div>
+        </div>
+
+            
+        </div>
+        <br>
+
+                        <h1>AÑADIR CARGOS</h1>
+                        <form action="{{ url('storecargos')}}" method="POST">
+                        {{ csrf_field() }}
+                        <div class="form-group">
+
+                        <div class="col-sm-12">
+                        <div class="form-group form-float">
+                                    <label for="exampleInputEmail1">Areas: </label>
+                                        <select class="form-control" name="idArea" readonly="readonly">                            
+                                    <option value="{{ $areas->idArea}}" readonly="readonly">{{ $areas->nombreArea}}</option>
+                                               
+                                        </select>   
+                                        <br><br>
+                                       
+
+                                        <div class="form-line">
+                                            
+                                            <input class="form-control" type="text" name="nombreCargo" required>
+                                            <label class="form-label">Nombre Cargo: </label>    
+                                            
+                                        </div>
+                                        <br>
+                                        <div class="form-line">
+                                        <label for="exampleInputEmail1">Descripcion: </label>
+                                        <textarea class="form-control" placeholder="Escribe aqui una descripcion" name="descripcion"></textarea>
+                                            
+                                              
+                                            
+                                        </div>
+                                        <br>                          
+
+
+                                    </div>
+                                </div>
+                                <br>
+                                <label for="exampleInputEmail1">Estado: </label>   
+                                <div class="demo-switch">
+                                    <div class="switch">
+                                        <label>INACTIVO<input type="checkbox" name="estado" checked><span class="lever"></span>ACTIVO</label>
+                                    </div>
+                                
+                                </div>
+
+
+                        <br>
+                            <input class="btn btn-primary btn-block" type="submit" name="INGRESAR" value="AÑADIR">
+                            <br>
+                            <a href="{{route('areas.index')}} " class="btn btn-danger">CANCELAR</a>
+                            
+                        </div>
+                        </form>
+
+
+
+
+
+
+
+
+
+@endsection

@@ -1,0 +1,82 @@
+@extends('plantilla/layout')
+@section('contenido')
+
+
+<h1>MODIFICAR USUARIO APLICACION</h1>
+<form action="{{route('usuarioaplicacion.update', $usuarioaplicacion -> idUsuarioAplicacion)}}" method="POST">
+
+{{ csrf_field() }}
+<div class="form-group">
+
+<input name="_method" type="hidden" value="PATCH">
+<label for="exampleInputEmail1">Aplicacion: </label>
+
+
+    <select class="form-control" name="idAplicacion">
+        @forelse ($aplicacion as $aplicacion)
+
+
+            @if(($aplicacion->idAplicacion) == ($usuarioaplicacion->idAplicacion))
+
+            <option value="{{ $aplicacion->idAplicacion}}" selected>{{ $aplicacion->nombreAplicacion}}</option>
+            @endif
+            <option value="{{ $aplicacion->idAplicacion}}">{{ $aplicacion->nombreAplicacion}}</option>
+        @empty
+        <option value="">No hay Aplicaciones creados</option>}
+        @endforelse
+    </select>
+
+
+
+
+
+<label for="exampleInputEmail1">Usuario: </label>
+    <select class="form-control" name="idUsuario">
+        @forelse ($usuarios as $usuarios)
+
+
+            @if(($usuarios->idUsuario) == ($usuarioaplicacion->idUsuario))
+
+            <option value="{{ $usuarios->idUsuario}}" selected>{{ $usuarios->nombreUsuario}}</option>
+            @endif
+            <option value="{{ $usuarios->idUsuario}}">{{ $usuarios->nombreUsuario}}</option>
+        @empty
+        <option value="">No hay Usuarios creados</option>}
+        @endforelse
+    </select>
+
+
+                                    <br>
+
+                                    @if($usuarioaplicacion -> estado == 1)
+                                        <div class="demo-switch">
+                                            <div class="switch">
+
+                                                <label>INACTIVO<input type="checkbox" name="estado" checked><span class="lever"></span>ACTIVO</label>
+                                            </div>
+
+                                        </div>
+                                        @else
+                                        <div class="demo-switch">
+                                            <div class="switch">
+                                                <label>INACTIVO<input type="checkbox" name="estado"><span class="lever"></span>ACTIVO</label>
+
+
+                                            </div>
+
+                                        </div>
+                                        @endif
+    <br>
+
+    <button class="btn btn-primary btn-block" type="submit">MODIFICAR</button>
+    <a href="{{route('usuarioaplicacion.index')}} " class="btn btn-default waves-effect">CANCELAR</a>
+
+</div>
+</form>
+
+
+
+
+
+
+@endsection

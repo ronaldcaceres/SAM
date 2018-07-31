@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Perfil extends Model
+{
+    protected $table = 'perfil';
+
+    protected $primaryKey = 'idPerfil';
+
+    
+
+    protected $fillable = [
+    	'idAplicacion',
+    	'nombrePerfil',
+    	'descripcion',
+    	'estado',
+    	'usuarioCreacion',
+    	'fechaCreacion',
+    	'usuarioModificacion',
+    	'fechaModificacion'
+    ];
+
+    protected $guarded = [
+
+    ];
+}

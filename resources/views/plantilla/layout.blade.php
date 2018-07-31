@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>SAM</title>
+
+  <link href="{{asset('css/bootstrap.css')}}" rel="stylesheet"> 
+  <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">  <!-- Bootstrap core CSS-->
+  <link href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+  <!-- Custom fonts for this template-->
+  <link href="{{asset('vendor/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+  <!-- Page level plugin CSS-->
+  <link href="{{asset('vendor/datatables/dataTables.bootstrap4.css')}}" rel="stylesheet">
+  <!-- Custom styles for this template-->
+  <link href="{{asset('css/sb-admin.css')}}" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{asset('estilosmodel.css')}}">
+
+
+<!--link de desing -->  
+
+
+
+    <!-- Custom Css -->
+    <link href="../../css/style.css" rel="stylesheet">
+
+
+
+
+
+</head>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" href=""></a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion"><br><br><br>
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Usuarios">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-wrench"></i>
+            <span class="nav-link-text">Usuarios y Aplicaciones</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="collapseComponents">
+            <li>
+              <a href="{{route('regionales.index')}}">Regionales</a>
+            </li>
+            
+            <li>
+              <a href="{{route('areas.index')}}">Areas y Cargos</a>
+            </li>
+            <li>
+              <a href="{{route('usuarios.index')}}">Usuarios</a>
+            </li>
+            <li>
+              <a href="{{route('aplicacion.index')}}">Aplicaciones</a>
+            </li>
+            <li>
+              <a href="{{route('usuarioaplicacion.index')}}">Usuario Aplicacion</a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Aplicaciones">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents1" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-wrench"></i>
+            <span class="nav-link-text">Perfil y Roles</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="collapseComponents1">
+            
+            <li>
+              <a href="{{route('perfil.index')}}">Administracion</a>
+            </li>       
+          </ul>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Perfil">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents2" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-wrench"></i>
+            <span class="nav-link-text">Accesos</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="collapseComponents2">
+            <li>
+              <a href="{{route('usuarioaplicacionperfil.index')}}">Administracion de Permisos</a>
+            </li>            
+          </ul>
+        </li>
+
+        
+        
+      </ul>
+      <ul class="navbar-nav sidenav-toggler">
+        <li class="nav-item">
+          <a class="nav-link text-center" id="sidenavToggler">
+            <i class="fa fa-fw fa-angle-left"></i>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">    
+    
+        
+        
+
+
+
+    
+        <div class="container-fluid">
+            
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="nav-item">
+                      <form class="form-inline my-2 my-lg-0 mr-lg-2">
+                        <div class="input-group">
+                          <input class="form-control" type="text" placeholder="Buscar...">
+                          <span class="input-group-append">
+                            <button class="btn btn-primary" type="button">
+                              <i class="fa fa-search"></i>
+                            </button>
+                          </span>
+                        </div>
+                      </form>
+                    </li>
+                    <br><br>
+                    
+                    <li class="dropdown">
+                        <font style="text-transform: capitalize;" ><h1 class="navbar-brand">{{session('nombreUsuario')}} {{session('apellidoPaterno')}} {{session('apellidoMaterno')}}</h1></font>   
+                      <li>
+                        <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+                          <i class="fa fa-fw fa-sign-out"></i>SALIR</a>
+                      </li>
+                    </li>
+                   
+                </ul>
+            </div>
+        </div>
+    <br>
+
+        <span class="nav-link-text"></span> 
+  
+    </div>
+  </nav>
+  <div class="content-wrapper">
+    <div class="container-fluid">
+
+<br><br><br><br><br>
+
+
+
+@yield('contenido')
+
+
+
+
+
+
+<br>
+<br>
+<br>
+
+    
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Dispuesto a Salir?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Seleccione "Salir" si desea salir y cerrar sesion.</div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <a class="btn btn-primary" href="{{ url('usuarios/login')}}">Salir</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="sticky-footer">
+      <div class="container">
+        <div class="text-center">
+          <small>Copyright © 2018</small>
+        </div>
+      </div>
+    </footer>
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
+
+    <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <!-- Core plugin JavaScript-->    
+    <script src="{{asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+    <!-- Page level plugin JavaScript-->
+    <script src="{{asset('vendor/chart.js/Chart.min.js')}}"></script>
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables/dataTables.bootstrap4.js')}}"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="{{asset('js/sb-admin.min.js')}}"></script>
+    <!-- Custom scripts for this page-->
+    <script src="{{asset('js/sb-admin-datatables.min.js')}}"></script>
+    <script src="{{asset('js/sb-admin-charts.min.js')}}"></script>
+  </div>
+
+
+
+<!-- script desing -->
+
+    
+    <!-- Waves Effect Plugin Js -->
+    <script src="../../plugins/node-waves/waves.js"></script>
+
+
+    <!-- Custom Js -->
+    <script src="../../js/admin.js"></script>
+
+   
+
+</body>
+
+</html>

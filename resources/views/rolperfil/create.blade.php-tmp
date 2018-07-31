@@ -1,0 +1,86 @@
+@extends('plantilla/layout')
+@section('contenido')
+
+
+<h1>AÑADIR PERFIL Y ROL</h1>
+<form action="{{ route('rolperfil.store')}}" method="POST">
+{{ csrf_field() }}
+<div class="form-group">
+
+    <label for="exampleInputEmail1">Codigo Perfil: </label>
+    <select class="productcategory" id="productcategory" name="idPerfil" required>
+
+        <option value="0" disabled="true" selected="true">seleccione perfil</option>
+        @foreach($prod as $cat)
+            <option value="{{$cat->idPerfil}}">{{$cat->nombrePerfil}}</option>
+        @endforeach
+
+    </select>
+
+    <label for="exampleInputEmail1">Codigo Rol: </label>
+    <select class="productname" name="idRol" required>
+
+        <option value="0" disabled="true" selected="true">seleccione rol</option>
+    </select>
+
+
+
+
+    <label for="exampleInputEmail1">Estado: </label>
+    <SELECT class="form-control" name="estado">
+    	<OPTION value="0">ACTIVO</OPTION>
+    	<OPTION value="1">INACTIVO</OPTION>
+    </SELECT>
+<br>
+    <input class="btn btn-primary btn-block" type="submit" name="INGRESAR" value="AÑADIR">
+    <br>
+    <a href="{{route('rolperfil.index')}} " class="btn btn-danger">CANCELAR</a>
+
+</div>
+</form>
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        $(document).on('change','.productcategory',function(){
+            // console.log("hmm its change");
+
+            var cat_idPerfil=$(this).val();
+            // console.log(cat_id);
+            var div=$(this).parent();
+
+            var op=" ";
+
+            $.ajax({
+                type:'get',
+                url:'{!!URL::to('findProductName')!!}',
+                data:{'idPerfil':cat_idPerfil},
+                success:function(data){
+                    //console.log('success');
+
+                    //console.log(data);
+
+                    //console.log(data.length);
+                    op+='<option value="0" selected disabled>Roles</option>';
+                    for(var i=0;i<data.length;i++){
+                    op+='<option value="'+data[i].idRol+'">'+data[i].nombreRol+'</option>';
+                   }
+
+                   div.find('.productname').html(" ");
+                   div.find('.productname').append(op);
+                },
+                error:function(){
+
+                }
+            });
+        });
+
+    });
+</script>
+@endsection

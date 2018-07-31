@@ -1,0 +1,169 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Usuarios;
+use Carbon\Carbon;
+use App\Models\Auditoria;
+use App\Models\Logins;
+use App\Models\Areas;
+use App\Models\Cargos;
+use App\Models\Regionales;
+
+class UsuariosController extends Controller
+{
+    public function index(Request $request)
+    {
+        $usuarios = Usuarios::join("logins","usuarios.idLogin","=","logins.idLogin") 
+        ->select('*','usuarios.estado')      
+        ->get();
+        $title = 'Listado Tipo de Usuarios';
+        //$value = $request->session()->get('mensaje', $title);
+        //return view('usuarios.index',compact('title', 'usuarios'));
+        //$request->session()->put('email', 'me@example.com');
+        //session(['email' => 'me@example.com']); //usando el helper
+          
+        return view('usuarios.index',compact('title', 'usuarios'));
+        
+        
+    }
+
+    public function show()
+    {
+        $usuarios = Usuarios::all();
+        $title = 'Listado Tipo de Usuarios';
+        return view('usuarios.index',compact('title', 'usuarios'));
+    }
+
+
+    public function store(Request $request)
+    {
+        
+        $usuarios = new Usuarios;
+        $auditoria = new Auditoria;
+        $logins = new Logins;
+        
+        $logins -> nombreDominio = $request -> nombreDominio;
+        $logins -> password = hash('sha256',$request -> password); 
+        $logins-> save();
+
+        $a = $logins->idLogin;
+        $usuarios -> idLogin = $a;
+        $usuarios -> idCargo = $request -> idCargo;
+        $usuarios -> idRegional = $request -> idRegional;
+        $usuarios -> nombreUsuario = $request -> nombreUsuario;
+        $usuarios -> apellidoPaterno = $request -> apellidoPaterno;
+        $usuarios -> apellidoMaterno = $request -> apellidoMaterno;
+        $usuarios -> documentoIdentidad = $request -> documentoIdentidad;
+        if ($request -> estado == 'on') {
+            $usuarios -> estado = 1;
+        } else {
+            $usuarios -> estado = 0;
+        }
+        
+
+
+        $usuarios -> usuarioCreacion = session('nombreUsuario')." ".session('apellidoPaterno');
+        $usuarios -> usuarioModificacion = session('nombreUsuario')." ".session('apellidoPaterno');
+        $auditoria -> descripcion = session('nombreUsuario')." ".session('apellidoPaterno')." ".'creacion'." ".'usuario'." ".date('Y-m-d, H:i:s');
+
+        $auditoria-> save();
+        $usuarios-> save();
+
+        return redirect()->route('usuarios.index')->with('Success', 'Usuario registrado existosamente');
+    }
+
+    public function create()
+    {
+        /*$areas = Areas::all();
+        $cargos = Cargos::all();
+        $regionales = Regionales::all();
+        $title = 'Crear Nuevo Usuario';
+        return view('usuarios.create',compact('areas','cargos'),compact('regionales'));*/
+      
+        $regionales = Regionales::all();
+        $prod = Areas::all();
+
+        //$prod=Aplicacion::all();//get data from table
+        return view('usuarios.create',compact('prod','regionales'));//sent data to view
+    }
+
+    public function edit($id)
+    {
+        $usuarios = Usuarios::find($id);
+        $title = 'Modificar Usuarios';
+        return view('usuarios.edit', compact('title', 'usuarios'));
+    }
+
+
+
+
+
+    public function update(Request $request, $id)
+    {
+        $usuarios = Usuarios::find($id);
+        $auditoria = new Auditoria;
+        
+        $usuarios -> nombreDominio = $request -> nombreDominio;
+        $usuarios -> password = $request -> password; 
+        $usuarios -> nombreUsuario = $request -> nombreUsuario;
+        $usuarios -> apellidoPaterno = $request -> apellidoPaterno;
+        $usuarios -> apellidoMaterno = $request -> apellidoMaterno;
+        $usuarios -> documentoIdentidad = $request -> documentoIdentidad;
+        
+        if ($request -> estado == 'on') {
+            $usuarios -> estado = 1;
+        } else {
+            $usuarios -> estado = 0;
+        }
+        
+        $usuarios -> usuarioModificacion = session('nombreUsuario')." ".session('apellidoPaterno');
+        $auditoria -> descripcion = session('nombreUsuario')." ".session('apellidoPaterno')." ".'modificacion'." ".'usuario'." ".date('Y-m-d, H:i:s');
+        $auditoria-> save();
+
+        $usuarios -> save();
+        return redirect()->route('usuarios.index')->with('Success', 'Usuario actualizado existosamente');
+    }
+
+    
+
+    public function destroy($id)
+    {
+        $auditoria = new Auditoria;
+        $auditoria -> descripcion = session('nombreUsuario')." ".session('apellidoPaterno')." ".'elimino'." ".'usuario'." ".date('Y-m-d, H:i:s');
+        $auditoria-> save();
+        Usuarios::find($id)->delete();
+        return redirect()->route('usuarios.index')->with('success','Registro eliminado satisfactoriamente');
+
+    }
+
+
+
+
+
+
+
+
+
+    public function prodfunct()
+    {        
+        $prod = Areas::all();
+        //$prod=Aplicacion::all();//get data from table
+        return view('productlist',compact('prod'));//sent data to view
+
+    }
+
+    public function findProductName(Request $request){
+        
+        //if our chosen id and products table prod_cat_id col match the get first 100 data 
+
+        //$request->id here is the id of our chosen option id
+        $data=Cargos::select('nombreCargo','idCargo')->where('idArea',$request->idArea)->take(100)->get();
+        return response()->json($data);//then sent this data to ajax success
+    }
+    
+
+
+
+}

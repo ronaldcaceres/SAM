@@ -1,0 +1,118 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\UsuarioAplicacion;
+use App\Models\Aplicacion;
+use App\Models\Usuarios;
+use App\Models\Auditoria;
+
+
+class UsuarioAplicacionController extends Controller
+{
+    public function index()
+    {
+        $usuarioaplicacion = UsuarioAplicacion::join("aplicacion","usuarioaplicacion.idAplicacion","=","aplicacion.idAplicacion") 
+        ->join("usuarios","usuarioaplicacion.idUsuario","=","usuarios.idUsuario") 
+        ->select('*','usuarioaplicacion.estado')     
+        ->get();
+        
+        $usuarios = Usuarios::all();
+        $title = 'Listado de Usuario y Aplicacion';
+        return view('usuarioaplicacion.index',compact('title', 'usuarioaplicacion'),compact('aplicacion'));
+    }
+
+    public function show()
+    {
+        $usuarioaplicacion = UsuarioAplicacion::join("aplicacion","usuarioaplicacion.idAplicacion","=","aplicacion.idAplicacion") 
+        ->join("usuarios","usuarioaplicacion.idUsuario","=","usuarios.idUsuario") 
+        ->select('*','usuarioaplicacion.estado')     
+        ->get();
+        $aplicacion = Aplicacion::all();
+        $usuarios = Usuarios::all();
+        $title = 'Listado de Usuario y Aplicacion';
+        return view('usuarioaplicacion.index',compact('title', 'usuarioaplicacion'),compact('aplicacion'));
+    } 
+
+
+    public function store(Request $request)
+    {
+        $auditoria = new Auditoria;
+        $usuarioaplicacion = new UsuarioAplicacion;
+        $usuarioaplicacion -> idAplicacion = $request -> idAplicacion;
+        $usuarioaplicacion -> idUsuario = $request -> idUsuario; 
+        if ($request -> estado == 'on') {
+            $usuarioaplicacion -> estado = 1;
+        } else {
+            $usuarioaplicacion -> estado = 0;
+        }
+        $usuarioaplicacion -> usuarioCreacion = session('nombreUsuario')." ".session('apellidoPaterno');
+        $usuarioaplicacion -> usuarioModificacion = session('nombreUsuario')." ".session('apellidoPaterno');
+        $auditoria -> descripcion = session('nombreUsuario')." ".session('apellidoPaterno')." ".'creacion'." ".'usuarioaplicacion'." ".date('Y-m-d, H:i:s');
+        $auditoria-> save();
+
+        $usuarioaplicacion-> save();
+        return redirect()->route('usuarioaplicacion.index')->with('Success', 'Usuario Aplicacion registrado existosamente');
+    }
+
+    public function create()
+    {
+    	$usuarioaplicacion = UsuarioAplicacion::all();
+    	$aplicacion = Aplicacion::all();
+    	$usuarios = Usuarios::all();
+        $title = 'Crear Usuario Aplicacion';
+        return view('usuarioaplicacion.create',compact('title', 'aplicacion'),compact('aplicacion', 'usuarios'));
+    }
+
+
+
+    public function edit($id)
+    {
+        $usuarioaplicacion = UsuarioAplicacion::find($id);
+        $usuarios = Usuarios::all();
+        $aplicacion = Aplicacion::all();        
+        $title = 'Modificar Usuarios Aplicacion';
+        return view('usuarioaplicacion.edit', compact('title', 'usuarioaplicacion'),compact('aplicacion', 'usuarios'));
+    }
+
+
+
+    public function update(Request $request, $id)
+    {
+        $auditoria = new Auditoria;
+        $usuarioaplicacion = UsuarioAplicacion::find($id);
+
+        $usuarioaplicacion -> idAplicacion = $request -> idAplicacion;
+        $usuarioaplicacion -> idUsuario = $request -> idUsuario; 
+        if ($request -> estado == 'on') {
+            $usuarioaplicacion -> estado = 1;
+        } else {
+            $usuarioaplicacion -> estado = 0;
+        }
+        $usuarioaplicacion -> usuarioModificacion = session('nombreUsuario')." ".session('apellidoPaterno');
+
+        $auditoria -> descripcion = session('nombreUsuario')." ".session('apellidoPaterno')." ".'modificacion'." ".'usuarioaplicacion'." ".date('Y-m-d, H:i:s');
+        $auditoria-> save();
+
+
+        $usuarioaplicacion-> save();
+
+        return redirect()->route('usuarioaplicacion.index')->with('Success', 'Usuario y Aplicaciones actualizado existosamente');
+    }
+
+
+
+
+
+
+    public function destroy($id)
+    {
+        $auditoria = new Auditoria;
+        $auditoria -> descripcion = session('nombreUsuario')." ".session('apellidoPaterno')." ".'elimino'." ".'usuarioaplicacion'." ".date('Y-m-d, H:i:s');
+        $auditoria-> save();
+        UsuarioAplicacion::find($id)->delete();
+        return redirect()->route('usuarioaplicacion.index')->with('success','Registro eliminado satisfactoriamente');
+    }
+
+}
